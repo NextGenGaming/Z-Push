@@ -497,6 +497,13 @@ class Sync extends RequestProcessor {
                             }
                             else
                                 $clientid = false;
+                            
+                            // Workaround for reminderSet bug in outlook
+                            // https://jira.z-hub.io/browse/ZP-1075
+                            // Reminder is set to magic number in case reminderSet is null or false
+                            // We need to ignore reminserSet in this case
+                            if ($message->reminder == 1234567)
+                                $message->reminder = NULL;
 
                             // Get the SyncMessage if sent
                             if(($el = self::$decoder->getElementStartTag(SYNC_DATA)) && ($el[EN_FLAGS] & EN_FLAGS_CONTENT)) {
