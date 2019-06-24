@@ -119,6 +119,21 @@ class MAPIProvider {
                 }
             }
         }
+        
+        //If the client is an apple device
+        //example return from $_SERVER['HTTP_USER_AGENT'] -> 'Apple-iPad6C3/1606.203'
+        //if (stripos($_SERVER['HTTP_USER_AGENT'], 'apple') === TRUE) {
+            //Then add 14 hours to fix the 'day off' problem on apple devices
+            //TODO get server timezone and add 12 hours to the offset
+            $secondstoadd = 50400;//60 * 60 * 14
+            //TODO check for birthday and anniversary is set before applying changes
+            if (isset($message->birthday)) {
+                $message->birthday = $message->birthday + $secondstoadd;
+            }
+            if (isset($message->anniversary)) {
+                $message->anniversary = $message->anniversary + $secondstoadd;
+            }
+        //}
 
         return $message;
     }
